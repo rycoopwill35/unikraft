@@ -1,15 +1,22 @@
 ---
 inclusion: fileMatch
-fileMatchPattern: ["Test_Specifications/xen/x86/**/*.md", "plat/xen/x86/**/*"]
+fileMatchPattern: ["plat/xen/x86/arch_events.c", "plat/xen/x86/arch_time.c", "Test_Specifications/xen/x86/arch_events.md", "Test_Specifications/xen/x86/arch_time.md"]
 ---
 
-# Xen x86 specification guidance
+# File add-on: x86 Xen events and time (`arch_events.c`, `arch_time.c`)
+
+## How this file fits
+
+This is a layer 3 add-on. Follow `.kiro/steering/xen-test-specifications.md`
+and `.kiro/steering/xen-group-arch-split.md` first. This file keeps the
+file-specific notes for the two x86 files that already have example
+specifications.
 
 ## Starting scope
 
-The first specification folder is `Test_Specifications/xen/x86/`. Its existing
-examples cover event lifecycle hooks and timer lifecycle operations; they do
-not yet cover every function in the corresponding C files.
+The existing examples in `Test_Specifications/xen/x86/` cover event lifecycle
+hooks and timer lifecycle operations; they do not yet cover every function in
+the corresponding C files.
 
 Read these files when working on that scope:
 

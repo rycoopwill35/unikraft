@@ -1,13 +1,13 @@
 ---
 inclusion: fileMatch
-fileMatchPattern: 'plat/xen/x86/setup.c,Test_Specifications/xen/x86/setup.md'
+fileMatchPattern: ["plat/xen/x86/setup.c", "Test_Specifications/xen/x86/setup.md"]
 ---
 
 # Xen x86 setup — source-specific steering
 
 ## Purpose and scope
 
-Use this guidance when reviewing `plat/xen/x86/setup.c` or drafting/revising `Test_Specifications/xen/x86/setup.md` in this Unikraft fork. Follow `.kiro/steering/xen-test-specifications.md` and `.kiro/steering/xen-x86.md` as the primary project-wide rules. This file adds setup-specific review prompts; it does not replace those rules.
+Use this guidance when reviewing `plat/xen/x86/setup.c` or drafting/revising `Test_Specifications/xen/x86/setup.md` in this Unikraft fork. Follow `.kiro/steering/xen-test-specifications.md` and `.kiro/steering/xen-group-arch-split.md` as the primary rules; this is a layer 3 file add-on. This file adds setup-specific review prompts; it does not replace those rules.
 
 Produce **source-derived, reviewable draft requirements and proposed tests**, not approved safety artifacts. Modify specification documents only unless the user separately requests source changes. Do not claim that any test has been executed without actual execution evidence.
 

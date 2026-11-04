@@ -9,10 +9,42 @@ fileMatchPattern: ["Test_Specifications/xen/**/*.md", "plat/xen/**/*"]
 
 Help write reviewable, source-derived requirements and proposed tests for this
 fork of Unikraft. Store the resulting documents in `Test_Specifications/xen/`,
-mirroring the source subdirectories. Start with `x86/`; expand only when asked.
+in the folder that the file's group steering names (see the table below).
+Cover x86_64 first; cover arm64 only when asked.
 Work on specification documents by default. Source, configuration, and build
 changes are separate tasks and must not be introduced just to make a proposed
 test pass.
+
+## How the steering is layered
+
+Steering for `plat/xen/` has three layers. Each layer adds to the one above it
+and never contradicts it.
+
+1. **Rules (this file).** Evidence, traceability, document structure, ID and
+   test-claim rules for every Xen specification.
+2. **Group files (`xen-group-*.md`).** One per kind of code. A group file says
+   what requirements for that kind of code look like, which test methods fit,
+   and points at one reviewed example specification to copy. Every source file
+   in `plat/xen/` belongs to exactly one group.
+3. **File add-ons (`xen-file-*.md`).** Optional, and only for a file whose
+   generated specification failed review under its group file alone. An add-on
+   lists the file-specific facts and traps that the group file missed. Do not
+   create an add-on before the group file has been tried on that file.
+
+| Group file | Source files | Specification folder | ID prefix |
+| --- | --- | --- | --- |
+| `xen-group-interface-headers.md` | `pal/**`, `include/uk/plat/xen/*.h`, `arch/**` | `Test_Specifications/xen/interface/` | `REQ-IF-<TOPIC>`; arch layer `REQ-ARCH-<ARCH>-<TOPIC>` |
+| `xen-group-arch-split.md` | `x86/*.c`, `arm/*.c`, non-hypercall headers in `include/xen-x86/` and `include/xen-arm/` | `Test_Specifications/xen/x86/`, `.../arm64/`, `.../shared/` | `REQ-X86-<TOPIC>`, `REQ-ARM64-<TOPIC>`, shared `REQ-XEN-<TOPIC>` |
+| `xen-group-hypercalls.md` | `include/xen-x86/hypercall*.h`, `include/xen-arm/hypercall.h`, `arm/hypercalls*.S` | `Test_Specifications/xen/hypercalls/` | `REQ-HCALL-<ARCH>` |
+| `xen-group-boot-link.md` | `x86/*.S`, `arm/entry*.S`, `arm/link*.lds.S` | `Test_Specifications/xen/boot/` | `REQ-BOOT-<ARCH>-<TOPIC>` |
+| `xen-group-core-runtime.md` | `*.c` at the top of `plat/xen/`, `include/common/*.h` | `Test_Specifications/xen/core/` | `REQ-CORE-<TOPIC>` |
+| `xen-group-build-config.md` | `Config.uk`, `Makefile.uk`, `Linker.uk` | `Test_Specifications/xen/build/` | `REQ-BUILD-<TOPIC>` |
+
+Paths in the "Source files" column are relative to `plat/xen/`. `<ARCH>` is
+`X86` or `ARM64`. Each `REQ-` prefix has a matching `TEST-` prefix.
+
+If a file seems to fit two groups, pick the group whose test method fits the
+file's main claims, and say so in the specification's source scope.
 
 ## Evidence before requirements
 
@@ -31,7 +63,8 @@ test pass.
 
 ## Document structure
 
-Follow `Test_Specifications/xen/x86/arch_events.md` and `arch_time.md`:
+Follow the example specification that the file's group steering names. Every
+example uses this layout, first set by `Test_Specifications/xen/x86/arch_events.md`:
 
 1. Title and draft/example status; retain the existing example disclaimer.
 2. Source scope, including dependencies needed to interpret behavior.
@@ -42,9 +75,9 @@ Follow `Test_Specifications/xen/x86/arch_events.md` and `arch_time.md`:
    steps, and an explicit expected result.
 6. Assumptions, coverage gaps, or open questions when present.
 
-Keep existing IDs stable. Use `REQ-X86-<TOPIC>-NNN` and
-`TEST-X86-<TOPIC>-NNN` for new x86 entries; check existing documents for
-collisions. Every requirement needs at least one proposed test, and every test
+Keep existing IDs stable. For new entries, use the `REQ-` and `TEST-` prefix
+that the file's group gives in the table above, followed by `-NNN`; check
+every document under `Test_Specifications/xen/` for collisions. Every requirement needs at least one proposed test, and every test
 must name the requirements it checks. Do not silently broaden an existing ID's
 meaning when adding unrelated behavior.
 
